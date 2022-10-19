@@ -52,3 +52,5 @@ for i in range(2, table_width - 2):
 
 print(border.SYMBOL + inside1.SYMBOL * (table_length - 2) + border.SYMBOL)
 print(border.SYMBOL * table_length)
+
+class Table:
