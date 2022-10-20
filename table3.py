@@ -1,13 +1,10 @@
-# table_length = 10
-# table_width = 5
-
-
 class TableMaterial(object):
     SYMBOL = "-"
 
-    def __init__(self, name, color):
+    def __init__(self, name, color, price):
         self.name = name
         self.color = color
+        self.price = price
 
     def print_material(self):
         print(self.name)
@@ -16,60 +13,50 @@ class TableMaterial(object):
 class Wood(TableMaterial):
     SYMBOL = "W"
 
-    def __init__(self, name, color):
-        super(Wood, self).__init__(name, color)
+    def __init__(self, name, color, price):
+        super(Wood, self).__init__(name, color, price)
 
 
 class Metal(TableMaterial):
     SYMBOL = "M"
 
-    def __init__(self, name, color):
-        super(Metal, self).__init__(name, color)
+    def __init__(self, name, color, price):
+        super(Metal, self).__init__(name, color, price)
 
 
 class Glass(TableMaterial):
     SYMBOL = "G"
 
-    def __init__(self, name, color):
-        super(Glass, self).__init__(name, color)
+    def __init__(self, name, color, price):
+        super(Glass, self).__init__(name, color, price)
 
 
 class Aluminum(TableMaterial):
     SYMBOL = "A"
 
-    def __init__(self, name, color):
-        super(Aluminum, self).__init__(name, color)
-
-
-border = Wood("wood", "black")
-inside1 = Metal("steal", "silver")
-inside2 = Glass("glass", "none")
-
-# print(border.SYMBOL * table_length)
-# print(border.SYMBOL + inside1.SYMBOL * (table_length - 2) + border.SYMBOL)
-#
-# for i in range(2, table_width - 2):
-#     print(border.SYMBOL + inside2.SYMBOL * (table_length - 2) + border.SYMBOL)
-#
-# print(border.SYMBOL + inside1.SYMBOL * (table_length - 2) + border.SYMBOL)
-# print(border.SYMBOL * table_length)
+    def __init__(self, name, color, price):
+        super(Aluminum, self).__init__(name, color, price)
 
 
 class Table(object):
 
-    def __init__(self, table_length, table_width, material):
-        self.table_length = table_length
-        self.table_width = table_width
-        self.material = material
-        self.plate = []
+    def __init__(self, plate):
+        self.plate = plate
 
-        for i in range(self.table_width):
-            self.plate.append([])
-            for j in range(self.table_length):
-                self.plate[i].append(self.material)
-
-    # def TableConfigurator(self, length, width, material):
-    #     pass
+    def table_price(self):
+        price = 0
+        dd = {
+            "W": 8,
+            "G": 6,
+            "M": 5,
+            "A": 10
+        }
+        for i in self.plate:
+            for j in i:
+                if j in dd:
+                    y = dd.get(j)
+                    price += y
+        return price
 
 
 class Printer(object):
@@ -83,13 +70,21 @@ class Printer(object):
         print (result)
 
 
-room_table = Table(5, 3, Wood.SYMBOL)
+user_plate = [
+    ["W", "M", "W"],
+    ["W", "G", "W"],
+    ["G", None, "G"],
+    ["A", None, "A"]
+    ]
 
-
-pp = Printer(room_table)
+x = Table(user_plate)
+pp = Printer(x)
 pp.print_table()
 
-# room_table.TableConfigurator(1, 1, Metal.SYMBOL)
-# pp = Printer(room_table)
-# pp.print_table()
+metal = Metal("Steal", "silver", 5)
+glass = Glass("Glass", "White", 6)
+wood = Wood("Wood", "Black", 8)
+alum = Aluminum("Aluminum", "while", 10)
 
+
+print(x.table_price())
