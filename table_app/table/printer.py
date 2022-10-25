@@ -2,7 +2,7 @@ class Printer(object):
 
     def __init__(self, app_plate):
         self.app_plate = app_plate
-
+    #print table material and price
     def print_table(self, money):
         result = ""
         for i in self.app_plate:
