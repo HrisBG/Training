@@ -10,7 +10,7 @@ user_plate = [
     ]
 
 x = Table(user_plate)
-print(x.plate)
+
 print(x.app_plate)
 print(x.table_price())
 pp = Printer(x.app_plate)

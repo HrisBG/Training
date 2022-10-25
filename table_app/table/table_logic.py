@@ -1,16 +1,14 @@
 class Table(object):
 
-    def __init__(self, plate):
-        self.plate = plate
-        self.app_plate = []
-        self.row = len(self.plate)
-        self.col = len(self.plate[0])
+    def __init__(self, app_plate):
+        self.app_plate = app_plate
 
-        for row in range(self.row):
-            self.app_plate.append([])
-            for col in range(self.col):
-                i = self.plate[row][col]()
-                self.app_plate[row].append(i)
+        for row in self.app_plate:
+            for col in row:
+                new = col()
+                place = row.index(col)
+                row.pop(place)
+                row.insert(place, new)
 
     # calculate table price
     def table_price(self):
