@@ -8,7 +8,7 @@ class TableMaterial(object):
 
 class Wood(TableMaterial):
     SYMBOL = "W"
-    PRICE = 8
+    PRICE = 10
 
 
 class Metal(TableMaterial):
