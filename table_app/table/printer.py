@@ -1,4 +1,6 @@
 from table_app.table.custom_error import *
+
+
 class Printer(object):
 
     def __init__(self, app_plate):
