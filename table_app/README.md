@@ -7,3 +7,5 @@ ___
 * future app expansions
 ___
 
+## Class Diagram
+![](C:\Users\hgrigorov\Desktop\class_diagram.png)
