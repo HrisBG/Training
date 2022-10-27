@@ -8,4 +8,4 @@ ___
 ___
 
 ## Class Diagram
-![](table_app/UML_diagram.png)
+![](https://github.com/HrisBG/Training/blob/main/table_app/UML_diagram.png)
