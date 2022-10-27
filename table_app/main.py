@@ -30,6 +30,3 @@ except PrinterConfigError:
 
 except Exception as e:
     print(e)
-
-
-
