@@ -8,4 +8,4 @@ ___
 ___
 
 ## Class Diagram
-![](C:\Users\hgrigorov\Desktop\class_diagram.png)
+![](table_app/class_diagram.png)
