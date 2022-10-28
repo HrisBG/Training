@@ -13,7 +13,7 @@ class Wood(TableMaterial):
 
 class Metal(TableMaterial):
     SYMBOL = "M"
-    PRICE = 5
+    PRICE = 6
 
 
 class Glass(TableMaterial):
