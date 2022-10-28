@@ -8,4 +8,4 @@ ___
 ___
 
 ## Class Diagram
-![](table_app\images\UML_diagram_V1.png)
+![](/images/UML_diagram_V1.png)
