@@ -1,19 +1,19 @@
 from table_app.table.custom_error import *
 
 
-class Printer(object):
+class TablePrinter(object):
 
-    def __init__(self, app_plate):
-        self.app_plate = app_plate
-    #print table material and price
+    def __init__(self, template):
+        self.template = template
 
-    def print_table(self, money):
+    def print(self, param):
+        """ print table material and price """
         try:
             result = ""
-            for i in self.app_plate:
+            for i in self.template:
                 temp = ""
                 for j in i:
-                    xxx = getattr(j, money)
+                    xxx = getattr(j, param)
                     temp += str(xxx) + " "
                 result += temp + '\n'
             print(result)

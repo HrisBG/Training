@@ -1,6 +1,6 @@
-from table_app.table.material import *
+from table_app.table.table_material import *
 from table_app.table.table_logic import *
-from table_app.table.printer import *
+from table_app.table.table_printer import *
 from table_app.table.custom_error import *
 
 user_plate = [
@@ -11,13 +11,17 @@ user_plate = [
     ]
 
 try:
-    x = Table(user_plate)
-    print(x.app_plate)
-    x.table_price()
-    print(x.table_price())
-    pp = Printer(x.app_plate)
-    pp.print_table("PRICE")
-    pp.print_table("SYMBOL")
+    x = TableLogic(user_plate)
+    #x = TableLogic.logic(user_plate)
+    #x = TableLogic.from_list(user_plate)
+    print(x)
+    print('-' * 10)
+    #x.price = 99
+    print(x.price)
+    pp = TablePrinter(x.template)
+    param = input('Please insert option:')
+    pp.print(param)
+
 
 except TableConfigError:
     print("Please check table configuration")

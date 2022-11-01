@@ -10,5 +10,5 @@ class TablePriceError(TableError):
     pass
 
 
-class PrinterConfigError(Exception):
+class PrinterConfigError(TableError):
     pass
