@@ -42,6 +42,8 @@ class Game(object):
         self.temp_list = []
         self.player_word = ''
         self.points = None
+        self.play = True
+        self.exit = False
 
         # check player name from list or add new player
         if player_name in PlayerDB.players:
@@ -101,12 +103,18 @@ class Game(object):
                 if command == "try":
                     if self.hil_points < 10:
                         Visualization.no_hil_points()
+                        suggestion_letter = input('Please make your suggestion: ').lower()
                     else:
                         self.points += 1
                         self.hil_points -= 10
                         Visualization.add_try(self.hil_points)
+                        suggestion_letter = input('Please make your suggestion: ').lower()
                 if command == 'stop':
                     break
+                if command == 'exit':
+                    self.exit = True
+                    break
+
                 if command == 'difficulty':
                     self.difficulty = input('Choose difficulty - easy,normal or hard: ')
                     self.get_list()
@@ -158,18 +166,19 @@ class Game(object):
                 self.game_on = False
 
     def run(self):
-        play = True
-        while play is True:
+        while self.play is True:
             self.player_word = self.get_player_word()
             self.points = self.player_points()
             self.wrong_letters = []
             self.game_engine()
+            if self.exit is True:
+                break
             game = input("Play Again ?" + '\n' + 'Y / N :').lower()
             if game == 'y':
-                play = True
+                self.play = True
                 self.game_on = True
             else:
-                play = False
+                self.play = False
 
 
 g1 = Game(player_name, player_category, player_difficulty)
