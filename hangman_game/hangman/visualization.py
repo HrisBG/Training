@@ -27,7 +27,7 @@ class Visualization(object):
 
     @staticmethod
     def make_suggestion():
-        pass
+        return 'Please make your suggestion: '
 
     @staticmethod
     def right_letter(letter):
@@ -64,4 +64,3 @@ class Visualization(object):
     @staticmethod
     def add_try(points):
         print(f'You add 1 try !!!Now you have - {points} HIL points !!!')
-

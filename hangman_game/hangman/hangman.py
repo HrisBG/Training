@@ -20,6 +20,7 @@ class Game(object):
         self.difficulty = difficulty
         self.show_wrong_letter = False
         self.hil_points = 0
+        self.suggestion_letter = None
         self.wrong_letters = []
         self.game_on = True
         self.params = (0, 0)
@@ -40,10 +41,12 @@ class Game(object):
         self.get_temp_list()
 
     def get_list(self):
+        """get list of selected category"""
         category_list = getattr(WordsDB, self.category)
         self.category_list = category_list
 
     def difficulty_param(self):
+        """take parameters of selected difficulty"""
         all_type = {
             'easy': (3, 5),
             'normal': (6, 9),
@@ -52,6 +55,7 @@ class Game(object):
         self.params = all_type[self.difficulty]
 
     def get_temp_list(self):
+        """return list with possible words"""
         ll = []
         for i in self.category_list:
             if self.params[0] <= len(i) <= self.params[1]:
@@ -59,6 +63,7 @@ class Game(object):
         self.temp_list = ll
 
     def get_player_word(self):
+        """get player word from temporary list"""
         word = random.choice(self.temp_list)
         self.temp_list.remove(word)
         return word
@@ -71,11 +76,13 @@ class Game(object):
             return False
 
     def show_letters(self):
+        """switch on or off the collection of guess letters"""
         choose = input('If you want to see the wrong letters , press -  Y : ').lower()
         if choose == 'y':
             self.show_wrong_letter = True
 
     def command_try(self):
+        """gain one try , if have enough HIL points"""
         if self.hil_points < 10:
             Visualization.no_hil_points()
             return
@@ -86,6 +93,7 @@ class Game(object):
             return
 
     def command_difficulty(self):
+        """change difficulty level"""
         self.difficulty = input('Choose difficulty - easy,normal or hard: ')
         self.get_list()
         self.difficulty_param()
@@ -93,6 +101,7 @@ class Game(object):
         return
 
     def command_category(self):
+        """change category"""
         self.category = input('Choose category - city, animal or sport: ')
         self.get_list()
         self.difficulty_param()
@@ -100,11 +109,13 @@ class Game(object):
         return
 
     def hidden_word_configurator(self):
+        """make hidden word"""
         self.hidden_word = ('_' * len(self.player_word))
         self.hidden_word = [_ for _ in self.hidden_word]
         return
 
     def hint_logic(self):
+        """open one hidden letter in hidden word"""
         for i in range(len(self.player_word)):
             self.player_word = [_ for _ in self.player_word]
             if self.hidden_word[i] != self.player_word[i]:
@@ -113,18 +124,44 @@ class Game(object):
             break
         return
 
+    def game_engine_logic(self):
+        """check suggestion letter is right or not"""
+        if self.suggestion_letter in self.player_word:
+            for i in range(len(self.player_word)):
+                if self.suggestion_letter == self.player_word[i]:
+                    self.hidden_word[i] = self.suggestion_letter
+            Visualization.right_letter(self.suggestion_letter)
+            if self.player_word == ''.join(self.hidden_word):
+                Visualization.win(self.player_name)
+                self.hil_points += 1
+                self.game_on = False
+        else:
+            if self.suggestion_letter not in self.wrong_letters:
+                self.wrong_letters.append(self.suggestion_letter)
+            Visualization.wrong_letter(self.suggestion_letter)
+            if self.show_wrong_letter is True:
+                Visualization.all_wrong_letters(self.wrong_letters)
+            self.points -= 1
+            Visualization.score(self.points)
+
     def game_engine(self):
+        """
+        check user input for command , suggestion letter or whole word and
+        check player points
+        """
         Visualization.start_game()
         self.hidden_word_configurator()
         self.show_letters()
         while self.game_on is not False:
             Visualization.show_hidden_word(self.hidden_word)
-            suggestion_letter = input('Please make your suggestion: ').lower()
-            if suggestion_letter[0] == '@':
-                command = suggestion_letter[1:]
+            self.suggestion_letter = input(Visualization.make_suggestion()).lower()
+#           check type of input
+            if self.suggestion_letter[0] == '@':
+                command = self.suggestion_letter[1:]
+#               check type of command
                 if command == "try":
                     self.command_try()
-                    suggestion_letter = input('Please make your suggestion: ').lower()
+                    self.suggestion_letter = input(Visualization.make_suggestion()).lower()
                 if command == 'stop' or command == "exit":
                     if command == "exit":
                         self.exit = True
@@ -142,33 +179,37 @@ class Game(object):
                     else:
                         self.hint_logic()
                         continue
-            if len(suggestion_letter) > 0 and suggestion_letter[0] != "@" and \
-                    suggestion_letter == self.player_word:
+#           check whole word suggestion
+            if len(self.suggestion_letter) > 0 and self.suggestion_letter[0] != "@" and \
+                    self.suggestion_letter == self.player_word:
                 self.hil_points += 1
                 Visualization.win(self.player_name)
                 break
-            if suggestion_letter in self.player_word:
-                for i in range(len(self.player_word)):
-                    if suggestion_letter == self.player_word[i]:
-                        self.hidden_word[i] = suggestion_letter
-                Visualization.right_letter(suggestion_letter)
-                if self.player_word == ''.join(self.hidden_word):
-                    Visualization.win(self.player_name)
-                    self.hil_points += 1
-                    self.game_on = False
-            else:
-                if suggestion_letter not in self.wrong_letters:
-                    self.wrong_letters.append(suggestion_letter)
-                Visualization.wrong_letter(suggestion_letter)
-                if self.show_wrong_letter is True:
-                    Visualization.all_wrong_letters(self.wrong_letters)
-                self.points -= 1
-                Visualization.score(self.points)
+            self.game_engine_logic()
+            # if self.suggestion_letter in self.player_word:
+            #     for i in range(len(self.player_word)):
+            #         if self.suggestion_letter == self.player_word[i]:
+            #             self.hidden_word[i] = self.suggestion_letter
+            #     Visualization.right_letter(self.suggestion_letter)
+            #     if self.player_word == ''.join(self.hidden_word):
+            #         Visualization.win(self.player_name)
+            #         self.hil_points += 1
+            #         self.game_on = False
+            # else:
+            #     if self.suggestion_letter not in self.wrong_letters:
+            #         self.wrong_letters.append(self.suggestion_letter)
+            #     Visualization.wrong_letter(self.suggestion_letter)
+            #     if self.show_wrong_letter is True:
+            #         Visualization.all_wrong_letters(self.wrong_letters)
+            #     self.points -= 1
+            #     Visualization.score(self.points)
+#           check points for continue game
             if self.check_points() is False:
                 Visualization.lost_game(self.player_name)
                 self.game_on = False
 
     def run(self):
+        """start , restart and close game"""
         Visualization.greeting(self.player_name)
         while self.play is True:
             self.player_word = self.get_player_word()
