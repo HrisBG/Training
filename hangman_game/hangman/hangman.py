@@ -1,4 +1,3 @@
-import random
 from hangman_game.hangman.visualization import *
 
 # player_name = input('Please insert your name:')
@@ -14,7 +13,7 @@ player_difficulty = 'easy'
 class PlayerDB(object):
     players = {
         'John': 0,
-        'Peter': 30,
+        'Peter': 10,
         'Albert': 3
     }
 
@@ -44,6 +43,7 @@ class Game(object):
         self.points = None
         self.play = True
         self.exit = False
+        self.hidden_word = None
 
         # check player name from list or add new player
         if player_name in PlayerDB.players:
@@ -89,53 +89,67 @@ class Game(object):
         if choose == 'y':
             self.show_wrong_letter = True
 
+    def command_try(self):
+        if self.hil_points < 10:
+            Visualization.no_hil_points()
+            return
+        else:
+            self.points += 1
+            self.hil_points -= 10
+            Visualization.add_try(self.hil_points)
+            return
+
+    def command_difficulty(self):
+        self.difficulty = input('Choose difficulty - easy,normal or hard: ')
+        self.get_list()
+        self.difficulty_param()
+        self.get_temp_list()
+        return
+
+    def command_category(self):
+        self.category = input('Choose category - city, animal or sport: ')
+        self.get_list()
+        self.difficulty_param()
+        self.get_temp_list()
+        return
+
+    def hidden_word_configurator(self):
+        self.hidden_word = ('_' * len(self.player_word))
+        self.hidden_word = [_ for _ in self.hidden_word]
+        return
+
     def game_engine(self):
-        Visualization.greeting(self.player_name)
-        hidden_word = ('_' * len(self.player_word))
-        hidden_word = [_ for _ in hidden_word]
         Visualization.start_game()
+        self.hidden_word_configurator()
         self.show_letters()
         while self.game_on is not False:
-            Visualization.show_hidden_word(hidden_word)
+            Visualization.show_hidden_word(self.hidden_word)
             suggestion_letter = input('Please make your suggestion: ').lower()
             if suggestion_letter[0] == '@':
                 command = suggestion_letter[1:]
                 if command == "try":
-                    if self.hil_points < 10:
-                        Visualization.no_hil_points()
-                        suggestion_letter = input('Please make your suggestion: ').lower()
-                    else:
-                        self.points += 1
-                        self.hil_points -= 10
-                        Visualization.add_try(self.hil_points)
-                        suggestion_letter = input('Please make your suggestion: ').lower()
-                if command == 'stop':
+                    self.command_try()
+                    suggestion_letter = input('Please make your suggestion: ').lower()
+                elif command == 'stop':
                     break
-                if command == 'exit':
+                elif command == 'exit':
                     self.exit = True
                     break
-
-                if command == 'difficulty':
-                    self.difficulty = input('Choose difficulty - easy,normal or hard: ')
-                    self.get_list()
-                    self.difficulty_param()
-                    self.get_temp_list()
+                elif command == 'difficulty':
+                    self.command_difficulty()
                     break
-                if command == 'category':
-                    self.category = input('Choose category - city, animal or sport: ')
-                    self.get_list()
-                    self.difficulty_param()
-                    self.get_temp_list()
+                elif command == 'category':
+                    self.command_category()
                     break
-                if command == 'hint':
+                elif command == 'hint':
                     self.points -= 2
                     if self.check_score() is False:
                         Visualization.no_points()
                     else:
                         for i in range(len(self.player_word)):
                             self.player_word = [_ for _ in self.player_word]
-                            if hidden_word[i] != self.player_word[i]:
-                                hidden_word[i] = self.player_word[i]
+                            if self.hidden_word[i] != self.player_word[i]:
+                                self.hidden_word[i] = self.player_word[i]
                                 self.player_word = ''.join(self.player_word)
                             break
                         continue
@@ -147,9 +161,9 @@ class Game(object):
             if suggestion_letter in self.player_word:
                 for i in range(len(self.player_word)):
                     if suggestion_letter == self.player_word[i]:
-                        hidden_word[i] = suggestion_letter
+                        self.hidden_word[i] = suggestion_letter
                 Visualization.right_letter(suggestion_letter)
-                if self.player_word == ''.join(hidden_word):
+                if self.player_word == ''.join(self.hidden_word):
                     Visualization.win(self.player_name)
                     self.hil_points += 1
                     self.game_on = False
@@ -166,6 +180,7 @@ class Game(object):
                 self.game_on = False
 
     def run(self):
+        Visualization.greeting(self.player_name)
         while self.play is True:
             self.player_word = self.get_player_word()
             self.points = self.player_points()
