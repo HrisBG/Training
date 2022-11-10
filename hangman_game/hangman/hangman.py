@@ -104,6 +104,15 @@ class Game(object):
         self.hidden_word = [_ for _ in self.hidden_word]
         return
 
+    def hint_logic(self):
+        for i in range(len(self.player_word)):
+            self.player_word = [_ for _ in self.player_word]
+            if self.hidden_word[i] != self.player_word[i]:
+                self.hidden_word[i] = self.player_word[i]
+                self.player_word = ''.join(self.player_word)
+            break
+        return
+
     def game_engine(self):
         Visualization.start_game()
         self.hidden_word_configurator()
@@ -116,27 +125,22 @@ class Game(object):
                 if command == "try":
                     self.command_try()
                     suggestion_letter = input('Please make your suggestion: ').lower()
-                elif command == 'stop' or command == "exit":
+                if command == 'stop' or command == "exit":
                     if command == "exit":
                         self.exit = True
                     break
-                elif command == 'difficulty':
+                if command == 'difficulty':
                     self.command_difficulty()
                     break
-                elif command == 'category':
+                if command == 'category':
                     self.command_category()
                     break
-                elif command == 'hint':
+                if command == 'hint':
                     self.points -= 2
                     if self.check_points() is False:
                         Visualization.no_points()
                     else:
-                        for i in range(len(self.player_word)):
-                            self.player_word = [_ for _ in self.player_word]
-                            if self.hidden_word[i] != self.player_word[i]:
-                                self.hidden_word[i] = self.player_word[i]
-                                self.player_word = ''.join(self.player_word)
-                            break
+                        self.hint_logic()
                         continue
             if len(suggestion_letter) > 0 and suggestion_letter[0] != "@" and \
                     suggestion_letter == self.player_word:
@@ -160,7 +164,7 @@ class Game(object):
                     Visualization.all_wrong_letters(self.wrong_letters)
                 self.points -= 1
                 Visualization.score(self.points)
-            if Game.check_points(self) is False:
+            if self.check_points() is False:
                 Visualization.lost_game(self.player_name)
                 self.game_on = False
 
@@ -173,7 +177,7 @@ class Game(object):
             self.game_engine()
             if self.exit is True:
                 break
-            game = input("Play Again ?" + '\n' + 'Y / N :').lower()
+            game = input("Play Again ?" + '\n' + 'Y / N : ').lower()
             if game == 'y':
                 self.play = True
                 self.game_on = True
