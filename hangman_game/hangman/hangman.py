@@ -1,4 +1,6 @@
 from hangman_game.hangman.visualization import *
+from hangman_game.hangman.players import *
+from hangman_game.hangman.words import *
 
 # player_name = input('Please insert your name:')
 # player_difficulty = input('Choose difficult - easy,normal or hard:')
@@ -8,21 +10,6 @@ from hangman_game.hangman.visualization import *
 player_name = 'Peter'
 player_category = 'city'
 player_difficulty = 'easy'
-
-
-class PlayerDB(object):
-    players = {
-        'John': 0,
-        'Peter': 10,
-        'Albert': 3
-    }
-
-
-class WordsDB(object):
-    city = ['Rome', 'Paris', 'Sofia', 'Madrid', 'Vienna', 'London', 'Berlin', 'Istanbul', 'Bucharest',
-            'Johannesburg', 'Washington', 'Nottingham', 'Manchester', 'Copenhagen']
-    animal = ['Bear', 'Tiger', 'Elephant', 'Crocodile', 'Hippopotamus', 'Chimpanzee']
-    sport = ['Golf', 'Judo', 'Tennis', 'Football', 'Volleyball', 'Basketball']
 
 
 class Game(object):
@@ -36,7 +23,6 @@ class Game(object):
         self.wrong_letters = []
         self.game_on = True
         self.params = (0, 0)
-        self.old_words = []
         self.category_list = []
         self.temp_list = []
         self.player_word = ''
@@ -80,12 +66,12 @@ class Game(object):
     def player_points(self):
         return len(self.player_word)
 
-    def check_score(self):
+    def check_points(self):
         if self.points <= 0:
             return False
 
     def show_letters(self):
-        choose = input('If you want to see the wrong letters , press -  Y :').lower()
+        choose = input('If you want to see the wrong letters , press -  Y : ').lower()
         if choose == 'y':
             self.show_wrong_letter = True
 
@@ -130,10 +116,9 @@ class Game(object):
                 if command == "try":
                     self.command_try()
                     suggestion_letter = input('Please make your suggestion: ').lower()
-                elif command == 'stop':
-                    break
-                elif command == 'exit':
-                    self.exit = True
+                elif command == 'stop' or command == "exit":
+                    if command == "exit":
+                        self.exit = True
                     break
                 elif command == 'difficulty':
                     self.command_difficulty()
@@ -143,7 +128,7 @@ class Game(object):
                     break
                 elif command == 'hint':
                     self.points -= 2
-                    if self.check_score() is False:
+                    if self.check_points() is False:
                         Visualization.no_points()
                     else:
                         for i in range(len(self.player_word)):
@@ -175,7 +160,7 @@ class Game(object):
                     Visualization.all_wrong_letters(self.wrong_letters)
                 self.points -= 1
                 Visualization.score(self.points)
-            if Game.check_score(self) is False:
+            if Game.check_points(self) is False:
                 Visualization.lost_game(self.player_name)
                 self.game_on = False
 
