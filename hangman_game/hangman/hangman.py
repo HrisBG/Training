@@ -82,7 +82,7 @@ class Game(object):
             self.show_wrong_letter = True
 
     def command_try(self):
-        """gain one try , if have enough HIL points"""
+        """gain one try if player have enough HIL points"""
         if self.hil_points < 10:
             Visualization.no_hil_points()
             return
