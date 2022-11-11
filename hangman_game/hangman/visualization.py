@@ -30,11 +30,11 @@ class Visualization(object):
         return 'Please make your suggestion: '
 
     @staticmethod
-    def right_letter(letter):
+    def right_chr(letter):
         print(f'Yes, the --> {letter} <-- is in the word')
 
     @staticmethod
-    def wrong_letter(letter):
+    def wrong_chr(letter):
         print(f'No, the --> {letter} <-- is not in word')
 
     @staticmethod
@@ -68,3 +68,7 @@ class Visualization(object):
     @staticmethod
     def show_hil_points(name, points):
         print(f"{name} , your HIL points are {points} !!!")
+
+    @staticmethod
+    def show_letters():
+        return 'If you don`t want to see the wrong letters press --> N <-- ,' + '\n' + 'otherwise press any button: '
