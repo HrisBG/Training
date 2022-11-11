@@ -21,9 +21,9 @@ class Visualization(object):
         print('Let`s play Hangman')
 
     @staticmethod
-    def score(points):
-        x = random.choice(['The points is:', 'The Pooooints :', 'Left points :'])
-        print(f'{x} {points}')
+    def errors(error):
+        x = random.choice(['Bad suggestions:', 'Errors :', f'Number of tries! :'])
+        print(f'{x} {error}')
 
     @staticmethod
     def make_suggestion():
@@ -54,8 +54,8 @@ class Visualization(object):
         print(f'That`s bad , {name}, you lost the game')
 
     @staticmethod
-    def no_points():
-        print(f'Not enough points')
+    def no_try():
+        print(f'Not enough tries')
 
     @staticmethod
     def no_hil_points():
@@ -64,3 +64,7 @@ class Visualization(object):
     @staticmethod
     def add_try(points):
         print(f'You add 1 try !!!Now you have - {points} HIL points !!!')
+
+    @staticmethod
+    def show_hil_points(name, points):
+        print(f"{name} , your HIL points are {points} !!!")
