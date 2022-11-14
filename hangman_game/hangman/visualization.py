@@ -38,7 +38,7 @@ class Visualization(object):
         print(f'No, the --> {letter} <-- is not in word')
 
     @staticmethod
-    def all_wrong_letters(letters):
+    def all_wrong_chr(letters):
         print(f'Wrong letters: {", ".join(letters)}')
 
     @staticmethod
@@ -70,5 +70,5 @@ class Visualization(object):
         print(f"{name} , your HIL points are {points} !!!")
 
     @staticmethod
-    def show_letters():
+    def show_chr():
         return 'If you don`t want to see the wrong letters press --> N <-- ,' + '\n' + 'otherwise press any button: '
