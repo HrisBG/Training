@@ -18,9 +18,11 @@ class Entertainment(with_metaclass(ABCMeta)):
     def run(self):
         pass
 
+    @abstractmethod
     def game_engine(self):
         pass
 
+    @abstractmethod
     def game_engine_logic(self):
         pass
 
