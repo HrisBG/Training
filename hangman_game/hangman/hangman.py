@@ -1,4 +1,4 @@
-from hangman_game.hangman.visualization import *
+from hangman_game.hangman.asciivisualization import *
 from hangman_game.hangman.players import *
 from hangman_game.hangman.words import *
 from abc import ABCMeta, abstractmethod
@@ -12,22 +12,22 @@ player_category = input('Choose category - city, animal or sport:')
 # player_difficulty = 'easy'
 
 
-class Entertainment(with_metaclass(ABCMeta)):
+class GameAbc(with_metaclass(ABCMeta)):
 
     @abstractmethod
-    def run(self):
+    def run_game(self):
         pass
 
     @abstractmethod
-    def game_engine(self):
+    def start_game_engine(self):
         pass
 
     @abstractmethod
-    def game_engine_logic(self):
+    def check_input_chr(self):
         pass
 
 
-class Game(Entertainment):
+class Game(GameAbc):
 
     def __init__(self, name, category, difficulty):
         self.player_name = name
@@ -52,7 +52,7 @@ class Game(Entertainment):
         if player_name in PlayerDB.players:
             self.hil_points = PlayerDB.players[player_name]
 
-        self.difficulty_param()
+        self.define_difficulty_param()
         self.get_list()
         self.get_temp_list()
 
@@ -61,7 +61,7 @@ class Game(Entertainment):
         category_list = getattr(WordsDB, self.category)
         self.category_list = category_list
 
-    def difficulty_param(self):
+    def define_difficulty_param(self):
 
         """take parameters of selected difficulty"""
         all_type = {
@@ -86,7 +86,7 @@ class Game(Entertainment):
         self.temp_list.remove(word)           # TODO: repair
         return word
 
-    def possible_errors(self):
+    def get_possible_errors(self):
         return len(self.player_word)
 
     def check_errors(self):
@@ -95,7 +95,7 @@ class Game(Entertainment):
 
     def show_letters(self):
         """switch off the collection of guess letters"""
-        choose = input(Visualization.show_chr()).lower()
+        choose = input(AsciiVisualization.show_chr()).lower()
         if choose == 'n':
             self.show_wrong_letter = False
 
@@ -109,19 +109,19 @@ class Game(Entertainment):
     def command_try(self):
         """gain one try if player have enough HIL points"""
         if self.hil_points <= 10:
-            Visualization.no_hil_points()
+            AsciiVisualization.no_hil_points()
             return
         else:
             self.errors += 1
             self.hil_points -= 10
-            Visualization.add_try(self.hil_points)
+            AsciiVisualization.add_try(self.hil_points)
             return
 
     def command_difficulty(self):
         """change difficulty level"""
         self.difficulty = input('Choose difficulty - easy,normal or hard: ')
         self.get_list()
-        self.difficulty_param()
+        self.define_difficulty_param()
         self.get_temp_list()
         self.game_on = False
         return
@@ -130,21 +130,22 @@ class Game(Entertainment):
         """change category"""
         self.category = input('Choose category - city, animal or sport: ')
         self.get_list()
-        self.difficulty_param()
+        self.define_difficulty_param()
         self.get_temp_list()
         self.game_on = False
         return
 
     def command_hint(self):
+        temp_errors = self.errors
         self.errors -= 2
         if self.check_errors() is False:
-            Visualization.no_try()
+            AsciiVisualization.no_try()
+            self.errors = temp_errors
         else:
             for i in range(len(self.player_word)):
                 self.player_word = [_ for _ in self.player_word]
                 if self.hidden_word[i] != self.player_word[i]:
                     self.hidden_word[i] = self.player_word[i]
-                    self.player_word = ''.join(self.player_word)
                     break
         return
 
@@ -170,81 +171,81 @@ class Game(Entertainment):
         command_type = self.commands[command]
         return command_type()
 
-    def game_engine_logic(self):
+    def check_input_chr(self):
         """check suggestion letter is right or not"""
         if self.input_chr in self.player_word:
             for i in range(len(self.player_word)):
                 if self.input_chr == self.player_word[i]:
                     self.hidden_word[i] = self.input_chr
-            Visualization.right_chr(self.input_chr)
+            AsciiVisualization.right_chr(self.input_chr)
 
             if self.player_word == self.hidden_word:
                 self.hil_points += 1
-                Visualization.win(self.player_name)
-                Visualization.show_hil_points(self.player_name, self.hil_points)
+                AsciiVisualization.win(self.player_name)
+                AsciiVisualization.show_hil_points(self.player_name, self.hil_points)
                 self.game_on = False
         else:
             if self.input_chr not in self.wrong_chr:
                 self.wrong_chr.append(self.input_chr)
-            Visualization.wrong_chr(self.input_chr)
+            AsciiVisualization.wrong_chr(self.input_chr)
 
             if self.show_wrong_letter is True:
-                Visualization.all_wrong_chr(self.wrong_chr)
+                AsciiVisualization.all_wrong_chr(self.wrong_chr)
             self.errors -= 1
-            Visualization.errors(self.errors)
+            AsciiVisualization.errors(self.errors)
 
-    def game_engine(self):
+    def start_game_engine(self):
         """
         check user input for command , suggestion letter or whole word and
         check player points
         """
-        Visualization.start_game()
-        Visualization.show_hil_points(self.player_name, self.hil_points)
+        AsciiVisualization.start_game()
+        AsciiVisualization.show_hil_points(self.player_name, self.hil_points)
         self.words_configurator()
         self.show_letters()
         while self.game_on is not False:
-            Visualization.show_hidden_word(self.hidden_word)
+            AsciiVisualization.show_hidden_word(self.hidden_word)
 
-            self.input_chr = input(Visualization.make_suggestion()).lower()
+            self.input_chr = input(AsciiVisualization.make_suggestion()).lower()
 
-#           check type of input
+            # check type of input
             if len(self.input_chr) > 1:
                 if self.input_chr[0] == '@':
                     command = self.input_chr[1:]
                     self.get_command(command)
                     continue
 
-#               check whole word suggestion
+                # check whole word suggestion
                 temp_input_chr = self.input_chr = [_ for _ in self.input_chr]
                 if temp_input_chr == self.player_word:
                     self.hil_points += 1
-                    Visualization.win(self.player_name)
-                    Visualization.show_hil_points(self.player_name, self.hil_points)
+                    AsciiVisualization.win(self.player_name)
+                    AsciiVisualization.show_hil_points(self.player_name, self.hil_points)
                     break
                 else:
                     if self.input_chr not in self.wrong_chr:
                         self.wrong_chr.append(self.input_chr)
-                    Visualization.wrong_chr(self.input_chr)
+                    AsciiVisualization.wrong_chr(self.input_chr)
                     self.errors -= 1
-                    Visualization.errors(self.errors)
+                    AsciiVisualization.errors(self.errors)
                     continue
 
-            self.game_engine_logic()
+            self.check_input_chr()
 
-#           check points for continue game
+            # check points for continue game
             if self.check_errors() is False:
-                Visualization.lost_game(self.player_name)
+                AsciiVisualization.lost_game(self.player_name)
                 self.game_on = False
 
-    def run(self):
+    def run_game(self):
         """start , restart and close game"""
-        Visualization.greeting(self.player_name)
+        AsciiVisualization.greeting(self.player_name)
 
         while self.play is True:
             self.player_word = self.get_player_word()
-            self.errors = self.possible_errors()
+            self.errors = self.get_possible_errors()
             self.wrong_chr = []
-            self.game_engine()
+            self.start_game_engine()
 
             if self.exit is True:
                 break
@@ -259,4 +260,4 @@ class Game(Entertainment):
 
 
 player1 = Game(player_name, player_category, player_difficulty)
-player1.run()
+player1.run_game()

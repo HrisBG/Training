@@ -1,7 +1,13 @@
 import random
+from abc import ABCMeta, abstractmethod
+from six import with_metaclass
 
 
-class Visualization(object):
+class VisualizationAbc(with_metaclass(ABCMeta)):
+    pass
+
+
+class AsciiVisualization(VisualizationAbc):
 
     @staticmethod
     def show_hidden_word(word):
