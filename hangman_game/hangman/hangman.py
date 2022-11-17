@@ -259,5 +259,5 @@ class Game(GameAbc):
                 self.play = False
 
 
-player1 = Game(player_name, player_category, player_difficulty)
-player1.run_game()
+# player1 = Game(player_name, player_category, player_difficulty)
+# player1.run_game()

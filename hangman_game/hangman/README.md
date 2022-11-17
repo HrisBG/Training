@@ -29,6 +29,8 @@
 ***
 ## How to Start Game
 ***
+### you must have Python 3.10 (or higher version) and PyCharm installed on your device:
+###
 
 
 

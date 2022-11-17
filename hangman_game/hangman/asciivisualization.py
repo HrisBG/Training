@@ -4,6 +4,9 @@ from six import with_metaclass
 
 
 class VisualizationAbc(with_metaclass(ABCMeta)):
+
+    # @abstractmethod
+    # def show_hidden_word(self):
     pass
 
 
