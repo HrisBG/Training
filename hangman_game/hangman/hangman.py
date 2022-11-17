@@ -1,6 +1,7 @@
 from hangman_game.hangman.asciivisualization import *
 from hangman_game.hangman.players import *
 from hangman_game.hangman.words import *
+from hangman_game.hangman.custom_error import *
 from abc import ABCMeta, abstractmethod
 from six import with_metaclass
 
@@ -10,6 +11,14 @@ player_category = input('Choose category - city, animal or sport:')
 # player_name = 'Peter'
 # player_category = 'city'
 # player_difficulty = 'easy'
+
+#
+# class DifficultyError(Exception):
+#     pass
+#
+#
+# class CategoryError(Exception):
+#     pass
 
 
 class GameAbc(with_metaclass(ABCMeta)):
@@ -58,8 +67,11 @@ class Game(GameAbc):
 
     def get_list(self):
         """get list of selected category"""
-        category_list = getattr(WordsDB, self.category)
-        self.category_list = category_list
+        try:
+            category_list = getattr(WordsDB, self.category)
+            self.category_list = category_list
+        except Exception as e:
+            raise CategoryError(e)
 
     def define_difficulty_param(self):
 
@@ -69,6 +81,8 @@ class Game(GameAbc):
             'normal': (6, 9),
             'hard': (10, 189819)
         }
+        if self.difficulty not in all_type.keys():
+            raise DifficultyError("Wrong Difficulty")
         self.params = all_type[self.difficulty]
 
     def get_temp_list(self):
@@ -119,20 +133,26 @@ class Game(GameAbc):
 
     def command_difficulty(self):
         """change difficulty level"""
-        self.difficulty = input('Choose difficulty - easy,normal or hard: ')
-        self.get_list()
-        self.define_difficulty_param()
-        self.get_temp_list()
-        self.game_on = False
+        try:
+            self.difficulty = input('Choose difficulty - easy,normal or hard: ')
+            self.get_list()
+            self.define_difficulty_param()
+            self.get_temp_list()
+            self.game_on = False
+        except DifficultyError:
+            print("Wrong difficulty")
         return
 
     def command_category(self):
         """change category"""
-        self.category = input('Choose category - city, animal or sport: ')
-        self.get_list()
-        self.define_difficulty_param()
-        self.get_temp_list()
-        self.game_on = False
+        try:
+            self.category = input('Choose category - city, animal or sport: ')
+            self.get_list()
+            self.define_difficulty_param()
+            self.get_temp_list()
+            self.game_on = False
+        except CategoryError:
+            print("Wrong category")
         return
 
     def command_hint(self):
@@ -167,9 +187,11 @@ class Game(GameAbc):
             'category': self.command_category,
             'hint': self.command_hint
         }
-
-        command_type = self.commands[command]
-        return command_type()
+        try:
+            command_type = self.commands[command]
+            return command_type()
+        except Exception:
+            raise DifficultyError
 
     def check_input_chr(self):
         """check suggestion letter is right or not"""
@@ -212,7 +234,10 @@ class Game(GameAbc):
             if len(self.input_chr) > 1:
                 if self.input_chr[0] == '@':
                     command = self.input_chr[1:]
-                    self.get_command(command)
+                    try:
+                        self.get_command(command)
+                    except DifficultyError:
+                        print("Wrong command")
                     continue
 
                 # check whole word suggestion
