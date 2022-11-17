@@ -12,14 +12,6 @@ player_category = input('Choose category - city, animal or sport:')
 # player_category = 'city'
 # player_difficulty = 'easy'
 
-#
-# class DifficultyError(Exception):
-#     pass
-#
-#
-# class CategoryError(Exception):
-#     pass
-
 
 class GameAbc(with_metaclass(ABCMeta)):
 
@@ -71,10 +63,9 @@ class Game(GameAbc):
             category_list = getattr(WordsDB, self.category)
             self.category_list = category_list
         except Exception as e:
-            raise CategoryError(e)
+            raise CategoryError("Wrong Category")
 
     def define_difficulty_param(self):
-
         """take parameters of selected difficulty"""
         all_type = {
             'easy': (3, 5),
@@ -95,9 +86,8 @@ class Game(GameAbc):
 
     def get_player_word(self):
         """get player word from temporary list"""
-
-        word = random.choice(self.temp_list)  # Fixme: try catch if empty
-        self.temp_list.remove(word)           # TODO: repair
+        word = random.choice(self.temp_list)
+        self.temp_list.remove(word)
         return word
 
     def get_possible_errors(self):
@@ -158,6 +148,7 @@ class Game(GameAbc):
     def command_hint(self):
         temp_errors = self.errors
         self.errors -= 2
+
         if self.check_errors() is False:
             AsciiVisualization.no_try()
             self.errors = temp_errors
@@ -225,6 +216,7 @@ class Game(GameAbc):
         AsciiVisualization.show_hil_points(self.player_name, self.hil_points)
         self.words_configurator()
         self.show_letters()
+
         while self.game_on is not False:
             AsciiVisualization.show_hidden_word(self.hidden_word)
 
@@ -247,9 +239,11 @@ class Game(GameAbc):
                     AsciiVisualization.win(self.player_name)
                     AsciiVisualization.show_hil_points(self.player_name, self.hil_points)
                     break
+
                 else:
                     if self.input_chr not in self.wrong_chr:
                         self.wrong_chr.append(self.input_chr)
+
                     AsciiVisualization.wrong_chr(self.input_chr)
                     self.errors -= 1
                     AsciiVisualization.errors(self.errors)
