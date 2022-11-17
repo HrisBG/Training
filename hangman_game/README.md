@@ -62,6 +62,6 @@
     3.Choose category
 
     4.Make decision for wrong letters 
-![](.\images\image8.png)
+![](./images/image8.png)
 13. Start play hangman
-![](.\images\image9.png)
+![](./images/image9.png)
