@@ -29,8 +29,39 @@
 ***
 ## How to Start Game
 ***
-### you must have Python 3.10 (or higher version) and PyCharm installed on your device:
+### you must have Python 3.10 (or higher version) , Git and PyCharm installed on your device.
 ###
+***
+1. Go to repository page
+2. Click on Code button
+3. Click on HTTPS button
+4. Copy link
+![](C:\Users\hgrigorov\Desktop\Training\hangman_game\images\image1.png)
+5. Open PyCharm -> Projects
+6. Click on Get from VCS
+7. Paste link
+8. Select directory
+9. Click Clone
+![](C:\Users\hgrigorov\Desktop\Training\hangman_game\images\image2.png)
+10. Open folder hangman_game
+11. Select and RUN main.py
+![](C:\Users\hgrigorov\Desktop\Training\hangman_game\images\image3.png)
+    1.If you have message ERROR for , you must set your local interpreter
+![](C:\Users\hgrigorov\Desktop\Training\hangman_game\images\image4.png)
+    2.Make next steps
+![](C:\Users\hgrigorov\Desktop\Training\hangman_game\images\image5.png)
+![](C:\Users\hgrigorov\Desktop\Training\hangman_game\images\image6.png)
+![](C:\Users\hgrigorov\Desktop\Training\hangman_game\images\image7.png)
+    3.Now select and RUN main.py
+12. Prepare to play
+    
+    1.Enter your name
 
+    2.Choose difficulty
+    
+    3.Choose category
 
-
+    4.Make decision for wrong letters 
+![](C:\Users\hgrigorov\Desktop\Training\hangman_game\images\image8.png)
+13. Start play hangman
+![](C:\Users\hgrigorov\Desktop\Training\hangman_game\images\image9.png)
