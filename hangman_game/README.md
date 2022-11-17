@@ -36,22 +36,22 @@
 2. Click on Code button
 3. Click on HTTPS button
 4. Copy link
-![](.\images\image1.png)
+![](./images/image1.png)
 5. Open PyCharm -> Projects
 6. Click on Get from VCS
 7. Paste link
 8. Select directory
 9. Click Clone
-![](.\images\image2.png)
+![](./images/image2.png)
 10. Open folder hangman_game
 11. Select and RUN main.py
-![](.\images\image3.png)
+![](./images/image3.png)
     1.If you have message ERROR for , you must set your local interpreter
-![](.\images\image4.png)
+![](./images/image4.png)
     2.Make next steps
-![](.\images\image5.png)
-![](.\images\image6.png)
-![](.\images\image7.png)
+![](./images/image5.png)
+![](./images/image6.png)
+![](./images/image7.png)
     3.Now select and RUN main.py
 12. Prepare to play
     
