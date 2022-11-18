@@ -1,4 +1,5 @@
 class PlayerDB(object):
+    """Contains all players profiles"""
 
     players = {
         'John': 0,

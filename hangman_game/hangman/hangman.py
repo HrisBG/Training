@@ -29,6 +29,9 @@ class GameAbc(with_metaclass(ABCMeta)):
 
 
 class Game(GameAbc):
+    """Contains player input , game logic, command options,
+    and run game
+    """
 
     def __init__(self, name, category, difficulty):
         self.player_name = name
@@ -91,9 +94,11 @@ class Game(GameAbc):
         return word
 
     def get_possible_errors(self):
+        """calculate possible errors"""
         return len(self.player_word)
 
     def check_errors(self):
+        """check possible errors"""
         if self.errors <= 0:
             return False
 
@@ -146,6 +151,7 @@ class Game(GameAbc):
         return
 
     def command_hint(self):
+        """check points for hint , fill in letter in hidden word"""
         temp_errors = self.errors
         self.errors -= 2
 
@@ -161,15 +167,18 @@ class Game(GameAbc):
         return
 
     def command_stop(self):
+        """stop game for certain word"""
         self.game_on = False
         return
 
     def command_exit(self):
+        """exit from game"""
         self.game_on = False
         self.exit = True
         return
 
     def get_command(self, command):
+        """check given command"""
         self.commands = {
             'try': self.command_try,
             'stop': self.command_stop,
@@ -212,6 +221,7 @@ class Game(GameAbc):
         check user input for command , suggestion letter or whole word and
         check player points
         """
+
         AsciiVisualization.start_game()
         AsciiVisualization.show_hil_points(self.player_name, self.hil_points)
         self.words_configurator()
