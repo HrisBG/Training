@@ -65,7 +65,7 @@ class Game(GameAbc):
         try:
             category_list = getattr(WordsDB, self.category)
             self.category_list = category_list
-        except Exception as e:
+        except Exception:
             raise CategoryError("Wrong Category")
 
     def define_difficulty_param(self):
@@ -286,4 +286,3 @@ class Game(GameAbc):
                 self.game_on = True
             else:
                 self.play = False
-
