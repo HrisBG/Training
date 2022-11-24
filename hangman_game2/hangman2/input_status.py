@@ -5,11 +5,11 @@ from abc import ABCMeta, abstractmethod
 from six import with_metaclass
 
 
-class InputABC(with_metaclass(ABCMeta)):
+class GamerAbc(with_metaclass(ABCMeta)):
     pass
 
 
-class InputStatus(InputABC):
+class Player(GamerAbc):
 
     def __init__(self, hil_points=20):
         self.name = ''

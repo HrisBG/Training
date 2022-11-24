@@ -1,7 +1,7 @@
 import random
 
 
-class Game(object):
+class GameLogic(object):
 
     def __init__(self, name, word, hil_points):
         self.name = name
@@ -18,7 +18,7 @@ class Game(object):
         self.print_command_try = False
         self.take_hint = False
 
-        self.get_possible_errors()
+        self.get_errors()
 
     def words_configurator(self):
         self.hidden_word = ('_' * len(self.word))
@@ -26,7 +26,7 @@ class Game(object):
         self.word = [_ for _ in self.word]
         return self
 
-    def get_possible_errors(self):
+    def get_errors(self):
         self.errors = len(self.word)
         return self.errors
 
@@ -36,14 +36,14 @@ class Game(object):
             self.game_run = False
             return self
 
-    def check_hidden_and_word(self):
+    def check_hidden_and_word(self):        # TODO merge with n.46 ?
         if self.hidden_word == self.word:
             self.print_points_errors = False
             self.print_win = True
             self.game_run = False
         return self
 
-    def check_input_str_and_word(self, letter):
+    def check_input_str_and_word(self, letter):        # TODO merge with n.39 ?
 
         if letter.input_str == letter.player_word:
             self.print_points_errors = False
@@ -51,7 +51,7 @@ class Game(object):
             self.game_run = False
         return self
 
-    def command_try(self, player_info):
+    def command_try(self, player_info):  # TODO  player_info ?
         if self.hil_points < 10:
             self.print_command_try = True
         else:
@@ -59,35 +59,32 @@ class Game(object):
             self.hil_points -= 10
             return self
 
+    def get_new_difficulty_category(self, player_info):
+        for i in player_info.category_list:
+            if player_info.params[0] <= len(i) <= player_info.params[1]:
+                player_info.temp_list.append(i.lower())
+        player_info.player_word = random.choice(player_info.temp_list)
+        return self
+
     def command_difficulty(self, player_info):
 
         player_info.get_difficulty()
-        ll = []
-        for i in player_info.category_list:
-            if player_info.params[0] <= len(i) <= player_info.params[1]:
-                ll.append(i.lower())
-        player_info.temp_list = ll
-        player_info.player_word = random.choice(player_info.temp_list)
+        self.get_new_difficulty_category(player_info)
         self.word = player_info.player_word
         self.words_configurator()
-        self.get_possible_errors()
+        self.get_errors()
         return self
 
     def command_category(self, player_info):
 
         player_info.get_category_words()
-        ll = []
-        for i in player_info.category_list:
-            if player_info.params[0] <= len(i) <= player_info.params[1]:
-                ll.append(i.lower())
-        player_info.temp_list = ll
-        player_info.player_word = random.choice(player_info.temp_list)
+        self.get_new_difficulty_category(player_info)
         self.word = player_info.player_word
         self.words_configurator()
-        self.get_possible_errors()
+        self.get_errors()
         return self
 
-    def command_hint(self, player_info):
+    def command_hint(self, player_info):  # TODO  player_info ?
         temp_errors = self.errors
         self.errors -= 2
 
@@ -102,7 +99,7 @@ class Game(object):
                     break
         return self
 
-    def command_stop(self, player_info):
+    def command_stop(self, player_info):        # TODO  player_info ?
         self.print_points_errors = False
         self.game_run = False
         return self
