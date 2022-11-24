@@ -1,5 +1,5 @@
-from hangman_game2.hangman2.words import *
-from hangman_game2.hangman2.player import *
+from hangman_game2.hangman2.words_db import *
+from hangman_game2.hangman2.player_db import *
 import random
 from abc import ABCMeta, abstractmethod
 from six import with_metaclass

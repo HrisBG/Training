@@ -1,4 +1,4 @@
-from hangman2.input_status import *
+from hangman2.gamer import *
 from hangman2.game import *
 from hangman2.printer import *
 
