@@ -42,5 +42,3 @@ class AsciiPrinter(PrinterAbc):
         if self.info.show_wrong_chr is True:
             all_word = ", ".join(self.info.wrong_chr)
             print(f'Wrong suggestions: {all_word}')
-
-
