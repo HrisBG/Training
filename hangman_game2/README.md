@@ -28,4 +28,4 @@
 ***
 ***
 ## Class Diagram
-![](\image\hangman2V1.png)
+![](./image/hangman2V1.png)
