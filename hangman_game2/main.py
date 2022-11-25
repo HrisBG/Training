@@ -15,9 +15,7 @@ game.words_configurator()
 
 printer = AsciiPrinter(game)
 
-print(player.name, player.word, player.hil_points)
-
-print(''.join(game.hidden_word))
+print('Word: ' + (''.join(game.hidden_word)))
 
 game.show_wrong_suggestions()
 
@@ -28,12 +26,5 @@ while game.game_run:
     game_run = game.logic(player_input)
     check = game.check_game_run()
 
-    printer.result()
-    printer.show_wrong_suggestions()
-    printer.win()
-    printer.lost_game()
-    printer.another_try()
-    printer.take_hint()
+    printer_check = printer.result()
 
-
-print(player.hil_points)
