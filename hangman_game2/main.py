@@ -1,36 +1,39 @@
-from hangman2.gamer import *
-from hangman2.game import *
+from hangman2.gamer_info import *
+from hangman2.game_logic import *
 from hangman2.printer import *
 
 
-player = Player()
-player.check_player()
-player.get_difficulty()
-player.get_category_words()
-player.get_temp_list()
+name = input('Please insert your name: ')
+difficulty = input('Choose difficult - easy,normal or hard: ')
+category = input('Choose category - city, animal or sport: ')
+
+player = Player(name, difficulty, category)
 player.get_word()
 
-game = GameLogic(player.name, player.player_word, player.hil_points)
+game = GameLogic(player)
 game.words_configurator()
 
-printer = AsciiPrinter()
+printer = AsciiPrinter(game)
 
-print(player.name, player.player_word, player.hil_points)
+print(player.name, player.word, player.hil_points)
+
 print(''.join(game.hidden_word))
 
-game_run = True
+game.show_wrong_suggestions()
 
 while game.game_run:
-    game_run = True
-    player_info = player.input_chr()
 
-    game_data = game.logic(player_info)
+    player_input = player.input_chr()
+
+    game_run = game.logic(player_input)
     check = game.check_game_run()
 
-    printer.result(game_data)
-    printer.win(game_data)
-    printer.lost_game(game_data)
-    printer.another_try(game_data)
-    printer.take_hint(game_data)
-    printer.show_wrong_suggestions(game_data)
+    printer.result()
+    printer.show_wrong_suggestions()
+    printer.win()
+    printer.lost_game()
+    printer.another_try()
+    printer.take_hint()
 
+
+print(player.hil_points)
