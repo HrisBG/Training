@@ -17,6 +17,7 @@ class GameLogic(object):
         self.print_command_try = False
         self.take_hint = False
         self.hidden_chr = '_'
+        self.command_chr = '@'
 
         self.get_errors()
 
@@ -63,7 +64,7 @@ class GameLogic(object):
         """take suggestions and check for commands"""
         # check for command or whole word
         if len(player_info.input_str) > 1:
-            if player_info.input_str[0] == "@":
+            if player_info.input_str[0] == self.command_chr:
                 all_commands = Commands(self)
                 all_commands.get_command(player_info.input_str)
             else:
