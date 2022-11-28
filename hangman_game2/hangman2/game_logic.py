@@ -16,12 +16,13 @@ class GameLogic(object):
         self.print_points_errors = True
         self.print_command_try = False
         self.take_hint = False
+        self.hidden_chr = '_'
 
         self.get_errors()
 
     def words_configurator(self):
         """make hidden word and convert form str to list"""
-        self.hidden_word = ('_' * len(self.gamer.word))
+        self.hidden_word = (self.hidden_chr * len(self.gamer.word))
         self.hidden_word = [_ for _ in self.hidden_word]
         self.gamer.word = [_ for _ in self.gamer.word]
         return self
