@@ -24,7 +24,6 @@
 * @try -  make additional try / each additional try will coast 10 HIL points /
 * @hint - take hint / each hint used will subtract 2 from the errors score /
 * @stop - stop game
-* @exit - exit game
 ***
 ***
 ## Class Diagram

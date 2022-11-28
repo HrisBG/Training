@@ -1,3 +1,4 @@
+from hangman_game2.hangman2.custom_error import *
 class Commands(object):
     """all special commands """
     def __init__(self, data):
@@ -56,13 +57,16 @@ class Commands(object):
 
     def get_command(self, command):
         """define player command"""
-        commands = {
-            '@try': self.gives_try,
-            '@stop': self.stop_game,
-            '@difficulty': self.change_difficulty,
-            '@category': self.change_category,
-            '@hint': self.gives_hint
-        }
+        try:
+            commands = {
+                '@try': self.gives_try,
+                '@stop': self.stop_game,
+                '@difficulty': self.change_difficulty,
+                '@category': self.change_category,
+                '@hint': self.gives_hint
+            }
 
-        command_type = commands[command]
+            command_type = commands[command]
+        except Exception:
+            raise DifficultyError('wrong command')
         return command_type()

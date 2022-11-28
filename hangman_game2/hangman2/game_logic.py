@@ -1,4 +1,5 @@
 from hangman_game2.hangman2.commands import *
+from hangman_game2.hangman2.custom_error import *
 
 
 class GameLogic(object):
@@ -63,30 +64,33 @@ class GameLogic(object):
     def logic(self, player_info):
         """take suggestions and check for commands"""
         # check for command or whole word
-        if len(player_info.input_str) > 1:
-            if player_info.input_str[0] == self.command_chr:
-                all_commands = Commands(self)
-                all_commands.get_command(player_info.input_str)
-            else:
-                self.check_word(player_info.input_str)
-            return self
-
-        else:
-            # check for right letter
-            if player_info.input_str in self.gamer.word:
-                for i in range(len(self.gamer.word)):
-                    if player_info.input_str == self.gamer.word[i]:
-                        self.hidden_word[i] = player_info.input_str
-                        self.check_word(player_info.input_str)
+        try:
+            if len(player_info.input_str) > 1:
+                if player_info.input_str[0] == self.command_chr:
+                    all_commands = Commands(self)
+                    all_commands.get_command(player_info.input_str)
+                else:
+                    self.check_word(player_info.input_str)
+                return self
 
             else:
-                # save wrong letters , calculate errors
-                if player_info.input_str not in self.wrong_chr:
-                    self.wrong_chr.append(player_info.input_str)
+                # check for right letter
+                if player_info.input_str in self.gamer.word:
+                    for i in range(len(self.gamer.word)):
+                        if player_info.input_str == self.gamer.word[i]:
+                            self.hidden_word[i] = player_info.input_str
+                            self.check_word(player_info.input_str)
 
-                self.errors -= 1
-                self.check_errors()
+                else:
+                    # save wrong letters , calculate errors
+                    if player_info.input_str not in self.wrong_chr:
+                        self.wrong_chr.append(player_info.input_str)
+
+                    self.errors -= 1
+                    self.check_errors()
             return self
+        except Exception:
+            raise DifficultyError("Wrong input")
 
     def check_game_run(self):
         """check for win or lost"""

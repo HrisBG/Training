@@ -1,5 +1,6 @@
 from hangman_game2.hangman2.words_db import *
 from hangman_game2.hangman2.player_db import *
+from hangman_game2.hangman2.custom_error import *
 import random
 from abc import ABCMeta, abstractmethod
 from six import with_metaclass
@@ -55,10 +56,13 @@ class Player(GamerAbc):
 
     def get_word(self):
         """take random word"""
-        self.get_difficulty()
-        self.get_category_words()
-        self.get_temp_list()
-        self.word = random.choice(self.temp_list)
+        try:
+            self.get_difficulty()
+            self.get_category_words()
+            self.get_temp_list()
+            self.word = random.choice(self.temp_list)
+        except Exception:
+            raise CategoryError("Bad category or difficulty")
         return self
 
     def input_chr(self):

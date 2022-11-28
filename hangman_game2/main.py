@@ -8,7 +8,11 @@ difficulty = input('Choose difficult - easy,normal or hard: ')
 category = input('Choose category - city, animal or sport: ')
 
 player = Player(name, difficulty, category)
-player.get_word()
+try:
+    player.get_word()
+except CategoryError as e:
+    print(e)
+
 
 game = GameLogic(player)
 game.words_configurator()
