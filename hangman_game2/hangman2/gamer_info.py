@@ -2,6 +2,7 @@ from hangman_game2.hangman2.words_db import *
 from hangman_game2.hangman2.player_db import *
 from hangman_game2.hangman2.custom_error import *
 import random
+import json
 from abc import ABCMeta, abstractmethod
 from six import with_metaclass
 
@@ -13,7 +14,7 @@ class GamerAbc(with_metaclass(ABCMeta)):
 class Player(GamerAbc):
     """Work with input data, check for saved player and define game word """
 
-    def __init__(self, name, difficulty, category, hil_points=20):
+    def __init__(self, name, difficulty, category, hil_points=0):
         self.name = name
         self.difficulty = difficulty
         self.category = category
@@ -24,10 +25,15 @@ class Player(GamerAbc):
         self.params = (0, 0)
         self.temp_list = []
 
-    def check_old_player(self):
-        """check for saved player"""
+        # check for saved player in PlayerDB class
         if self.name in PlayerDB.players:
             self.hil_points = PlayerDB.players[self.name]
+
+        # check for saved player in JSON file
+        # file = open(f'C:\\Users\\hgrigorov\\Desktop\\test1.json')
+        # data = json.load(file)
+        # if self.name in data:
+        #     self.hil_points = data[self.name]
 
     def get_difficulty(self):
         """define word parameters"""

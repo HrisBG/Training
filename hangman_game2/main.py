@@ -13,7 +13,6 @@ try:
 except CategoryError as e:
     print(e)
 
-
 game = GameLogic(player)
 game.words_configurator()
 
